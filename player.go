@@ -8,6 +8,7 @@ import (
 )
 
 var (
+	// There will be one weapon for each set of weapon sprites see assets/images/weapons
 	chainsaw *Weapon
 	pistol *Weapon
 )
@@ -30,7 +31,7 @@ func InitWeapons() {
 	pistol = NewWeapon ([]int {13}, []int {12, 11, 10}, "pistol")
 }
 
-
+// Currently, the player's only purpose is to keep track of the currently equipped weapon, but later it may have health or other attributes
 func NewPlayer (wpn *Weapon) *Player {
 	ply := new (Player)
 	ply.currentWeapon = wpn
@@ -60,6 +61,7 @@ func NewWeapon (standbyIndices, activeIndices []int, name string) *Weapon {
 	return wpn
 }
 
+// TODO: Fix weird animation stuff
 func (w *Weapon) Update () {
 	go w.Animate ()
 }

@@ -27,6 +27,12 @@ func main() {
 
 	aux := 64.0
 
+	// creates the level 
+	// 0- nothing
+	// 1- red wall
+	// 2- green wall
+	// 3- blue wall
+	// 4- pink wall
 	level1 := CreateLevel ([][]rune{
 		{'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1'},
 		{'1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
@@ -60,11 +66,13 @@ func main() {
 				window.Close()
 				break
 			case sf.EventKeyPressed:
+				// Renders 2d map when Tab is pressed
 				if event.Key.Code == sf.KeyTab {
 					renderType = 1
 				}
 				break
 			case sf.EventKeyReleased:
+				// Renders raycasted map when tab is not pressed
 				if event.Key.Code == sf.KeyTab {
 					renderType = 2
 				}
@@ -73,6 +81,8 @@ func main() {
 
 
 		}
+
+		// Movement/Rotation of camera (with collisions)
 
 		if sf.KeyboardIsKeyPressed (sf.KeyA) {
    			ActiveCamera.Angle -= 0.1
@@ -127,7 +137,10 @@ func main() {
 		window.Clear(sf.ColorBlack)
 
 		switch renderType {
+
+		// Renders a 2D top-down map and the rays
 		case 1:
+			// Render tiles
 			for i := 0; i < activeLevel.Width; i ++ {
 				for j := 0; j < activeLevel.Height; j ++ {
 					if activeLevel.Tiles [j][i] != '0' {
@@ -152,6 +165,7 @@ func main() {
 				}
 			}
 
+			// Render rays
 			for i := -(ActiveCamera.Fov / 2); i < ActiveCamera.Fov/2; i += 0.01 {
 				targetX, targetY := activeLevel.CastRay(ActiveCamera.X, ActiveCamera.Y, ActiveCamera.Angle+i)
 				var c sf.Color
@@ -185,12 +199,17 @@ func main() {
 				window.DrawPrimitives (vertArray)
 			}
 
+			// Render camera as a white rectangle
 			rect = sf.NewRectangleShape (sf.Vector2f {20, 20})
 			rect.SetPosition (sf.Vector2f {float32 (ActiveCamera.X - 10), float32 (ActiveCamera.Y - 10)})
 			rect.SetFillColor (sf.ColorWhite)
 			window.Draw (rect)
 			break
 		case 2:
+			// Renders the raycasted map
+			// TODO: render textures (see assets/images/textures)
+
+
 			rect = sf.NewRectangleShape (sf.Vector2f {float32 (screenWidth), float32 (screenHeight / 2)})
 			rect.SetPosition (sf.Vector2f {0, float32 (screenHeight/2)})
 			rect.SetFillColor (sf.Color {179, 108, 57, 255})
@@ -216,6 +235,7 @@ func main() {
 					break
 				}
 
+				// Darken color if on X-axis
 				if activeLevel.GetTileSide (targetX, targetY) == "NS" {
 					r := clr.R - 20
 					g := clr.G - 20
@@ -235,6 +255,7 @@ func main() {
 				j ++
 			}
 
+			// Trigger weapon's attack animation
 			if sf.IsMouseButtonPressed (sf.MouseLeft) && !player.currentWeapon.attack {
 				player.currentWeapon.attack = true
 			}
