@@ -31,7 +31,7 @@ type Player struct {
 
 func InitWeapons() {
 	chainsaw = NewWeapon ([]int {0, 1}, []int {2, 3}, "chainsaw", 30, true)
-	pistol = NewWeapon ([]int {13}, []int {12, 11, 10, 11, 12}, "pistol", 60, false)
+	pistol = NewWeapon ([]int {13}, []int {12, 11, 10, 8, 10}, "pistol", 100, false)
 }
 
 // Currently, the player's only purpose is to keep track of the currently equipped weapon, but later it may have health or other attributes
@@ -81,10 +81,10 @@ func (w *Weapon) Animate () {
 	if w.attack {
 		for i := 0; i < len (w.activeTextures); i ++ {
 			w.SetTexture (w.activeTextures[i], true)
-			time.Sleep (time.Duration (w.animateSpeed) * time.Millisecond)
-
 			w.SetOrigin (sf.Vector2f {w.GetGlobalBounds ().Width/2, w.GetGlobalBounds ().Height})
 			w.SetPosition (sf.Vector2f {screenWidth/2, screenHeight})
+
+			time.Sleep (time.Duration (w.animateSpeed) * time.Millisecond)
 		}
 
 		if !w.continuousActive {
@@ -96,10 +96,10 @@ func (w *Weapon) Animate () {
 	} else {
 		for i := 0; i < len (w.standbyTextures); i ++ {
 			w.SetTexture (w.standbyTextures[i], true)
-			time.Sleep (30 * time.Millisecond)
-
 			w.SetOrigin (sf.Vector2f {w.GetGlobalBounds ().Width/2, w.GetGlobalBounds ().Height})
 			w.SetPosition (sf.Vector2f {screenWidth/2, screenHeight})
+
+			time.Sleep (30 * time.Millisecond)
 		}
 	}
 }

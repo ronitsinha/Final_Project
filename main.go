@@ -23,7 +23,7 @@ func main() {
 
 	InitWeapons ()
 
-	player := NewPlayer (chainsaw)
+	player := NewPlayer (pistol)
 
 	aux := 64.0
 
@@ -69,7 +69,12 @@ func main() {
 				// Renders 2d map when Tab is pressed
 				if event.Key.Code == sf.KeyTab {
 					renderType = 1
+				} else if event.Key.Code == sf.KeyNum1 {
+					player.currentWeapon = chainsaw
+				} else if event.Key.Code == sf.KeyNum2 {
+					player.currentWeapon = pistol
 				}
+
 				break
 			case sf.EventKeyReleased:
 				// Renders raycasted map when tab is not pressed
@@ -264,15 +269,6 @@ func main() {
 				window.DrawPrimitives (vertArray)
 				j ++
 			}
-
-			// Trigger weapon's attack animation
-			/*if sf.IsMouseButtonPressed (sf.MouseLeft) && !player.currentWeapon.attack {
-				player.currentWeapon.attack = true
-			}
-
-			if !sf.IsMouseButtonPressed (sf.MouseLeft) {
-				player.currentWeapon.attack = false	
-			}*/
 
 			player.currentWeapon.Update ()
 
