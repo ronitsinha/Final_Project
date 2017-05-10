@@ -8,6 +8,8 @@ import (
 	sf "github.com/zyedidia/sfml/v2.3/sfml"
 )
 
+
+// The resources struct will hold textures, sounds, and potentially fonts
 type Resources struct {
 	images map[string]*sf.Texture
 }
@@ -22,6 +24,7 @@ func NewResources() *Resources {
 	return r
 }
 
+// Recursively searches assets/images for .png files and appends them to images slice
 func (r *Resources) LoadAllImages(dir string) {
 	files, err := ioutil.ReadDir(dir)
 

@@ -26,7 +26,7 @@ func (targetLevel *Level) CastRay(x, y, Angle float64) (int, int) {
   return int(x), int(y)
 }
 
-// Determines where the side hide is North/South or Lest/West
+// Determines whether the side hit is North/South or Lest/West
 func (targetLevel *Level) GetTileSide(x, y int) (side string) {
   dx := float64(targetLevel.TileWidth/2-x%targetLevel.TileWidth) / float64(targetLevel.TileWidth)
   dy := float64(targetLevel.TileHeight/2-y%targetLevel.TileHeight) / float64(targetLevel.TileHeight)
