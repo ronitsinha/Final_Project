@@ -77,6 +77,16 @@ func main() {
 					renderType = 2
 				}
 				break
+			case sf.EventMouseButtonPressed:
+				if event.MouseButton.Button == sf.MouseLeft {
+					player.currentWeapon.attack = true
+				}
+				break
+			case sf.EventMouseButtonReleased:
+				if event.MouseButton.Button == sf.MouseLeft {
+					player.currentWeapon.attack = false
+				}
+				break
 			}
 
 
@@ -256,9 +266,13 @@ func main() {
 			}
 
 			// Trigger weapon's attack animation
-			if sf.IsMouseButtonPressed (sf.MouseLeft) && !player.currentWeapon.attack {
+			/*if sf.IsMouseButtonPressed (sf.MouseLeft) && !player.currentWeapon.attack {
 				player.currentWeapon.attack = true
 			}
+
+			if !sf.IsMouseButtonPressed (sf.MouseLeft) {
+				player.currentWeapon.attack = false	
+			}*/
 
 			player.currentWeapon.Update ()
 

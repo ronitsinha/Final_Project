@@ -20,6 +20,9 @@ type Weapon struct {
 	activeTextures []*sf.Texture
 
 	attack bool
+
+	animateSpeed int
+	continuousActive bool
 }
 
 type Player struct {
@@ -27,8 +30,8 @@ type Player struct {
 }
 
 func InitWeapons() {
-	chainsaw = NewWeapon ([]int {0, 1}, []int {2, 3}, "chainsaw")
-	pistol = NewWeapon ([]int {13}, []int {12, 11, 10}, "pistol")
+	chainsaw = NewWeapon ([]int {0, 1}, []int {2, 3}, "chainsaw", 30, true)
+	pistol = NewWeapon ([]int {13}, []int {12, 11, 10, 11, 12}, "pistol", 60, false)
 }
 
 // Currently, the player's only purpose is to keep track of the currently equipped weapon, but later it may have health or other attributes
@@ -39,13 +42,15 @@ func NewPlayer (wpn *Weapon) *Player {
 	return ply
 }
 
-func NewWeapon (standbyIndices, activeIndices []int, name string) *Weapon {
+func NewWeapon (standbyIndices, activeIndices []int, name string, speed int, contA bool) *Weapon {
 	wpn := new (Weapon)
 
 	wpn.standbyTextures = make ([]*sf.Texture, 0)
 	wpn.activeTextures = make ([]*sf.Texture, 0)
 
+	wpn.animateSpeed = speed
 	wpn.Sprite = sf.NewSprite (res.images[name + "_" + strconv.Itoa (standbyIndices[0]) + ".png"])
+	wpn.continuousActive = contA
 
 	wpn.SetOrigin (sf.Vector2f {wpn.GetGlobalBounds ().Width/2, wpn.GetGlobalBounds ().Height})
 	wpn.SetPosition (sf.Vector2f {screenWidth/2, screenHeight})
@@ -58,23 +63,36 @@ func NewWeapon (standbyIndices, activeIndices []int, name string) *Weapon {
 		wpn.activeTextures = append (wpn.activeTextures, res.images [name + "_" + strconv.Itoa (activeIndices[i]) + ".png"])
 	}
 
+	go func () {
+		for {
+			wpn.Animate ()
+		}
+	} ()
+
 	return wpn
 }
 
 // TODO: Fix weird animation stuff
 func (w *Weapon) Update () {
-	go w.Animate ()
+	//go w.Animate ()
 }
 
 func (w *Weapon) Animate () {
 	if w.attack {
 		for i := 0; i < len (w.activeTextures); i ++ {
 			w.SetTexture (w.activeTextures[i], true)
-			time.Sleep (30 * time.Millisecond)
+			time.Sleep (time.Duration (w.animateSpeed) * time.Millisecond)
 
 			w.SetOrigin (sf.Vector2f {w.GetGlobalBounds ().Width/2, w.GetGlobalBounds ().Height})
 			w.SetPosition (sf.Vector2f {screenWidth/2, screenHeight})
-		}	
+		}
+
+		if !w.continuousActive {
+			time.Sleep (time.Duration (w.animateSpeed) * 2 * time.Millisecond)
+
+			w.attack = false
+		}
+
 	} else {
 		for i := 0; i < len (w.standbyTextures); i ++ {
 			w.SetTexture (w.standbyTextures[i], true)
@@ -84,6 +102,4 @@ func (w *Weapon) Animate () {
 			w.SetPosition (sf.Vector2f {screenWidth/2, screenHeight})
 		}
 	}
-
-	w.attack = false
 }
