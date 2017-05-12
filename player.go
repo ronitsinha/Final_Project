@@ -11,6 +11,7 @@ var (
 	// There will be one weapon for each set of weapon sprites see assets/images/weapons
 	chainsaw *Weapon
 	pistol *Weapon
+	shotgun *Weapon
 )
 
 type Weapon struct {
@@ -32,6 +33,7 @@ type Player struct {
 func InitWeapons() {
 	chainsaw = NewWeapon ([]int {0, 1}, []int {2, 3}, "chainsaw", 30, true)
 	pistol = NewWeapon ([]int {13}, []int {12, 11, 10, 8, 10}, "pistol", 100, false)
+	shotgun = NewWeapon ([]int {33}, []int {32, 28, 31, 28}, "shotgun", 100, false)
 }
 
 // Currently, the player's only purpose is to keep track of the currently equipped weapon, but later it may have health or other attributes
@@ -88,7 +90,7 @@ func (w *Weapon) Animate () {
 		}
 
 		if !w.continuousActive {
-			time.Sleep (time.Duration (w.animateSpeed) * 2 * time.Millisecond)
+			time.Sleep (time.Duration (w.animateSpeed) * time.Millisecond)
 
 			w.attack = false
 		}

@@ -12,14 +12,17 @@ import (
 // The resources struct will hold textures, sounds, and potentially fonts
 type Resources struct {
 	images map[string]*sf.Texture
+	textures []*sf.Image
 }
 
 func NewResources() *Resources {
 	r := new(Resources)
 
 	r.images = make(map[string]*sf.Texture)
+	r.textures = make ([]*sf.Image, 0)
 
 	r.LoadAllImages("./assets/images")
+	r.LoadTextures ("./assets/images")
 
 	return r
 }
@@ -39,6 +42,24 @@ func (r *Resources) LoadAllImages(dir string) {
 		} else if filepath.Ext(f.Name()) == ".png" {
 			texture := sf.NewTexture(dir + "/" + f.Name())
 			r.images[f.Name()] = texture
+		}
+	}
+}
+
+func (r *Resources) LoadTextures(dir string) {
+	files, err := ioutil.ReadDir(dir)
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	for _, f := range files {
+		if f.IsDir() {
+			r.LoadTextures(dir + "/" + f.Name())
+		} else if filepath.Ext(f.Name()) == ".png" {
+			filename := dir + "/" + f.Name()
+			r.textures = append (r.textures, sf.NewImage (filename))
 		}
 	}
 }

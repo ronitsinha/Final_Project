@@ -73,6 +73,8 @@ func main() {
 					player.currentWeapon = chainsaw
 				} else if event.Key.Code == sf.KeyNum2 {
 					player.currentWeapon = pistol
+				} else if event.Key.Code == sf.KeyNum3 {
+					player.currentWeapon = shotgun
 				}
 
 				break
