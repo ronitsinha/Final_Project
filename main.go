@@ -111,7 +111,7 @@ func main () {
 	tileWidth = screenWidth / mapWidth
 	tileHeight = screenHeight / mapHeight
 
-	window := sf.NewRenderWindow(sf.VideoMode{screenWidth, screenHeight, 32}, "Raycaster", sf.StyleDefault, nil)
+	window := sf.NewRenderWindow(sf.VideoMode{screenWidth, screenHeight, 32}, "Final Project", sf.StyleDefault, nil)
 	window.SetVerticalSyncEnabled(true)
 	window.SetFramerateLimit(60)
 
