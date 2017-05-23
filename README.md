@@ -17,7 +17,7 @@ Here's a screenshot of my progress so far:
 ![Alt text](./assets/images/screenshot.png?raw=true)
 
 The DOOM weapon sprites should be creditted to Falcon Delta,
-and the raycasting uses a Go binding of SFML found
+and this project uses a Go binding of SFML found
 here: https://github.com/zyedidia/sfml
 
 The raycasting is based on Lode Vandevenne's tutorial on raycasting using
