@@ -9,17 +9,17 @@ import (
 )
 
 
-// The resources struct will hold textures, sounds, and potentially fonts
+// The resources struct will hold textures and potentially fonts and sounds
 type Resources struct {
 	images map[string]*sf.Texture
-	textures []*sf.Image
+	textures map[string]*sf.Image
 }
 
 func NewResources() *Resources {
 	r := new(Resources)
 
 	r.images = make(map[string]*sf.Texture)
-	r.textures = make ([]*sf.Image, 0)
+	r.textures = make (map[string]*sf.Image, 0)
 
 	r.LoadAllImages("./assets/images")
 	r.LoadTextures ("./assets/images")
@@ -46,6 +46,7 @@ func (r *Resources) LoadAllImages(dir string) {
 	}
 }
 
+// Does the same as function above, only appends a type *sf.Texture to the textures slice
 func (r *Resources) LoadTextures(dir string) {
 	files, err := ioutil.ReadDir(dir)
 
@@ -59,7 +60,7 @@ func (r *Resources) LoadTextures(dir string) {
 			r.LoadTextures(dir + "/" + f.Name())
 		} else if filepath.Ext(f.Name()) == ".png" {
 			filename := dir + "/" + f.Name()
-			r.textures = append (r.textures, sf.NewImage (filename))
+			r.textures[f.Name ()] = sf.NewImage (filename)
 		}
 	}
 }
